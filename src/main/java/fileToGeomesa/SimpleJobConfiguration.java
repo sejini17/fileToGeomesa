@@ -6,11 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -25,8 +21,8 @@ import org.geotools.data.Transaction;
 import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.identity.FeatureIdImpl;
-import org.locationtech.geomesa.fs.FileSystemDataStoreFactory;
-import org.locationtech.geomesa.fs.storage.interop.PartitionSchemeUtils;
+//import org.locationtech.geomesa.fs.FileSystemDataStoreFactory;
+//import org.locationtech.geomesa.fs.storage.interop.PartitionSchemeUtils;
 import org.locationtech.geomesa.utils.interop.SimpleFeatureTypes;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -66,12 +62,15 @@ public class SimpleJobConfiguration {
     private DataStore datastore = null;
     @Bean
     public Step stepPrepareDataStore() {
-    	String[] args = new String[] {
-    			"--fs.path"
-    			, "hdfs://sjk-centos:8020/test_0321_1126/"
-    			, "--fs.encoding"
-    			, "parquet"
-    	};
+//    	String[] args = new String[] {
+//    			"--fs.path"
+//    			, "hdfs://sjk-centos:8020/test_0327/"
+//    			, "--fs.encoding"
+//    			, "parquet"
+//    	};
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("hbase.catalog", "example");
+
         return steps.get("stepPrepareDataStore")
                 .tasklet((contribution, chunkContext) -> {
                 	logger.info(">>>>> This is stepPrepareDataStore");
@@ -80,13 +79,14 @@ public class SimpleJobConfiguration {
 
                     // use geotools service loading to get a datastore instance
                     datastore = DataStoreFinder.getDataStore(
-                    		CommandLineDataStore.getDataStoreParams(
-                    				CommandLineDataStore.parseArgs(
-                    						getClass(), 
-                    						CommandLineDataStore.createOptions(new FileSystemDataStoreFactory().getParametersInfo()), 
-                    						args
-                    						)
-                    				)
+                            parameters
+//                    		CommandLineDataStore.getDataStoreParams(
+//                    				CommandLineDataStore.parseArgs(
+//                    						getClass(),
+//                    						CommandLineDataStore.createOptions(new FileSystemDataStoreFactory().getParametersInfo()),
+//                    						args
+//                    						)
+//                    				)
                     		);
                     if (datastore == null) {
                         throw new RuntimeException("Could not create data store with provided parameters");
@@ -107,10 +107,10 @@ public class SimpleJobConfiguration {
                     sft = getSimpleFeatureType();
                     // For the FSDS we need to modify the SimpleFeatureType to specify the index scheme
                     // GeoMesa의 FS을 사용하는 경우에 추가되는 스키마 정의 코드
-                    PartitionSchemeUtils.addToSft(
-                    		sft, 
-                    		PartitionSchemeUtils.apply(sft, "daily,z2-2bit", Collections.emptyMap())
-                    		);
+//                    PartitionSchemeUtils.addToSft(
+//                    		sft,
+//                    		PartitionSchemeUtils.apply(sft, "daily,z2-2bit", Collections.emptyMap())
+//                    		);
                     
                 	logger.info("Creating schema: " + DataUtilities.encodeType(sft));
                 	datastore.createSchema(sft);
