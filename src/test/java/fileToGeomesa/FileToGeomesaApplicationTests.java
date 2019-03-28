@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class FileToGeomesa1ApplicationTests {
+public class FileToGeomesaApplicationTests {
 
 	@Test
 	public void contextLoads() {

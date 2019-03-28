@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FileToGeomesa1Application {
+public class FileToGeomesaApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FileToGeomesa1Application.class, args);
+		SpringApplication.run(FileToGeomesaApplication.class, args);
 	}
 
 }

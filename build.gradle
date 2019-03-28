@@ -1,0 +1,91 @@
+plugins {
+    id 'org.springframework.boot' version '2.1.3.RELEASE'
+	id 'java'
+}
+
+apply plugin: 'io.spring.dependency-management'
+//apply plugin: 'eclipse'
+
+group = 'spring.batch'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	maven { url 'http://repo.boundlessgeo.com/main' }
+	maven { url 'http://download.osgeo.org/webdav/geotools' }
+	maven { url 'http://conjars.org/repo' }
+	
+	maven { url 'https://repo.locationtech.org/content/groups/releases' }
+	maven { url 'https://repo.locationtech.org/content/groups/snapshots' }
+	
+	mavenCentral()
+	maven { url 'https://repo.spring.io/snapshot' }
+	maven { url 'https://repo.spring.io/milestone' }
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
+	
+	runtimeOnly 'com.h2database:h2'
+	
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.batch:spring-batch-test'
+	
+	// geoMesa 기본 의존성
+	compile 'org.locationtech.geomesa:geomesa-utils_2.11:2.2.1'
+//	compile 'org.locationtech.geomesa:geomesa-index-api_2.11:2.2.1'
+//	compile 'org.locationtech.geomesa:geomesa-feature-avro_2.11:2.2.1'
+	
+//	compile 'org.geotools:gt-opengis:20.0'
+	compile 'org.geotools:gt-geojson:20.0'
+
+//    /* hbase geoMesa Dependency
+    compile 'org.locationtech.geomesa:geomesa-hbase-datastore_2.11:2.2.1'
+
+    compile 'org.apache.hbase:hbase-client:1.3.2'
+    compile 'org.apache.hbase:hbase-common:1.3.2'
+    compile 'org.apache.hbase:hbase-server:1.3.2'
+    compile 'org.apache.hbase:hbase-annotations:1.3.2'
+    compile 'org.apache.hbase:hbase-protocol:1.3.2'
+
+    compile 'org.apache.zookeeper:zookeeper:3.4.6'
+    //*/
+
+    /* accumulo geoMesa Dependency
+    compile 'org.locationtech.geomesa:geomesa-accumulo-datastore_2.11:2.2.1'
+
+    compile 'org.apache.accumulo:accumulo-core:1.7.2'
+    compile 'org.apache.accumulo:accumulo-start:1.7.2'
+    compile 'org.apache.zookeeper:zookeeper:3.4.6'
+
+    compile 'com.google.guava:guava:17.0'
+    //*/
+
+    /* FileSystem geoMesa Dependency
+    compile 'org.locationtech.geomesa:geomesa-fs-datastore_2.11:2.2.1'
+    compile 'org.locationtech.geomesa:geomesa-fs-storage-parquet_2.11:2.2.1'
+    compile 'org.locationtech.geomesa:geomesa-fs-storage-orc_2.11:2.2.1'
+    //*/
+
+    /*/ hdfs용 geoMesa의존성
+	compile 'org.apache.hadoop:hadoop-common:2.8.5'
+	compile 'org.apache.hadoop:hadoop-auth:2.8.5'
+	compile 'org.apache.hadoop:hadoop-client:2.8.5'
+	compile 'org.apache.hadoop:hadoop-hdfs:2.8.5'
+
+	compile 'org.xerial.snappy:snappy-java:1.1.1.7'
+    //*/
+
+	// 기타
+	compile 'commons-cli:commons-cli:1.4'
+    compile 'org.slf4j:slf4j-log4j12:1.7.5'
+    compile 'log4j:log4j:1.2.17'
+
+}
+
+configurations.all {
+    exclude module: 'slf4j-log4j12'
+    //exclude module: 'logback-classic'
+
+    exclude module: 'servlet-api'
+}
